@@ -27,8 +27,6 @@ workflows:
           sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "ndk;25.1.8937393"
       - name: Build APK
         script: |
-          mkdir android
-          cd android
           ./gradlew assemble${ANDROID_BUILD_TYPE}
     artifacts:
       - android/app/build/outputs/apk/${ANDROID_BUILD_TYPE}/app-${ANDROID_BUILD_TYPE}.apk
