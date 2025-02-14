@@ -5,7 +5,7 @@ workflows:
     max_build_duration: 30
     environment:
       vars:
-        ANDROID_BUILD_TYPE: debug  # Change to 'release' if needed
+        ANDROID_BUILD_TYPE: Release  # Change to 'release' if needed
         ANDROID_HOME: $HOME/android-sdk
         ANDROID_SDK_ROOT: $ANDROID_HOME
       java: 17
@@ -27,6 +27,7 @@ workflows:
           sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "ndk;25.1.8937393"
       - name: Build APK
         script: |
+        
           cd android
           ./gradlew assemble${ANDROID_BUILD_TYPE^}
     artifacts:
