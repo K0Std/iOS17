@@ -1,0 +1,24 @@
+workflows:
+  android-build:
+    name: Android APK Build
+    instance_type: linux_x2  # Use 'linux' for non-M1 builds
+    max_build_duration: 30
+    environment:
+      vars:
+        ANDROID_BUILD_TYPE: release  # Change to 'release' if needed
+      flutter: stable
+      java: 17
+    scripts:
+      - name: Set up Android SDK
+        script: |
+          sdkmanager --install "build-tools;34.0.0"
+      - name: Build APK
+        script: |
+          cd android
+          ./gradlew assemble${ANDROID_BUILD_TYPE^}
+    artifacts:
+      - android/app/build/outputs/apk/${ANDROID_BUILD_TYPE}/app-${ANDROID_BUILD_TYPE}.apk
+    publishing:
+      email:
+        recipients:
+          - "hossammohammed2040@gmail.com"  # Change to your email to receive the APK link
