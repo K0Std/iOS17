@@ -29,7 +29,7 @@ workflows:
         script: |
           mkdir android
           cd android
-          ./gradlew assemble${ANDROID_BUILD_TYPE^}
+          ./gradlew assemble${ANDROID_BUILD_TYPE}
     artifacts:
       - android/app/build/outputs/apk/${ANDROID_BUILD_TYPE}/app-${ANDROID_BUILD_TYPE}.apk
     publishing:
