@@ -5,13 +5,26 @@ workflows:
     max_build_duration: 30
     environment:
       vars:
-        ANDROID_BUILD_TYPE: release  # Change to 'release' if needed
-      flutter: stable
+        ANDROID_BUILD_TYPE: debug  # Change to 'release' if needed
+        ANDROID_HOME: $HOME/android-sdk
+        ANDROID_SDK_ROOT: $ANDROID_HOME
       java: 17
     scripts:
-      - name: Set up Android SDK
+      - name: Install Android SDK & Dependencies
         script: |
-          sdkmanager --install "build-tools;34.0.0"
+          export DEBIAN_FRONTEND=noninteractive
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jdk wget unzip
+          
+          mkdir -p $ANDROID_HOME/cmdline-tools
+          cd $ANDROID_HOME/cmdline-tools
+          wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip
+          unzip cmdline-tools.zip
+          mv cmdline-tools latest
+          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+
+          yes | sdkmanager --licenses
+          sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "ndk;25.1.8937393"
       - name: Build APK
         script: |
           cd android
@@ -21,4 +34,4 @@ workflows:
     publishing:
       email:
         recipients:
-          - "hossammohammed2040@gmail.com"  # Change to your email to receive the APK link
+          - "hossammohammed2040@gmail.com"  # Change this to receive the APK
